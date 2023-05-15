@@ -1,42 +1,56 @@
-var diceArr = [];
+function rollDice() {
+  setTimeout(function () {
+    var randomNumber1 = Math.floor(Math.random() * 6) + 1;
+    var randomNumber2 = Math.floor(Math.random() * 6) + 1;
+    var randomNumber3 = Math.floor(Math.random() * 6) + 1;
+    var randomNumber4 = Math.floor(Math.random() * 6) + 1;
+    var randomNumber5 = Math.floor(Math.random() * 6) + 1;
+    var randomNumber6 = Math.floor(Math.random() * 6) + 1;
 
-function initializeDice(){
-	for(i = 0; i < 6; i++){
-		diceArr[i] = {};
-		diceArr[i].id = "die" + i + 1;
-		diceArr[i].value = i + 1;
-		diceArr[i].clicked = 0;
-	}
+    document
+      .getElementById("die1")
+      .setAttribute("src", "./images/" + randomNumber1 + ".png");
+
+    document
+      .getElementById("die2")
+      .setAttribute("src", "./images/" + randomNumber2 + ".png");
+    document
+      .getElementById("die3")
+      .setAttribute("src", "./images/" + randomNumber3 + ".png");
+    document
+      .getElementById("die4")
+      .setAttribute("src", "./images/" + randomNumber4 + ".png");
+    document
+      .getElementById("die5")
+      .setAttribute("src", "./images/" + randomNumber5 + ".png");
+    document
+      .getElementById("die6")
+      .setAttribute("src", "./images/" + randomNumber6 + ".png");
+
+    var diceArr = [
+      randomNumber1,
+      randomNumber2,
+      randomNumber3,
+      randomNumber4,
+      randomNumber5,
+      randomNumber6,
+    ];
+
+    for (var i = 0; i < diceArr.length; i++) {
+      const isDuplicate = diceArr.filter((val) => val === diceArr[i]);
+
+      if (isDuplicate.length === 3) {
+        var valueOfDice = isDuplicate[0];
+        document.getElementById("header-text").innerHTML = "Three of a kind!";
+        document.getElementById("score").innerHTML = valueOfDice * 100;
+      }
+    }
+  }, 100);
 }
 
-/*Rolling dice values*/
-function rollDice(){
-	for(var i=0; i < 6; i++){
-		if(diceArr[i].clicked === 0){
-			diceArr[i].value = Math.floor((Math.random() * 6) + 1);
-		}
-	}
-	updateDiceImg();
-}
-
-/*Updating images of dice given values of rollDice*/
-function updateDiceImg(){
-	var diceImage;
-	for(var i = 0; i < 6; i++){
-		diceImage = "images/" + i + ".png";
-		document.getElementById(diceArr[i].id).setAttribute("src", diceImage);
-	}
-}
-
-function diceClick(img){
-	var i = img.getAttribute("data-number");
-
-	img.classList.toggle("transparent");
-	if(diceArr[i].clicked === 0){
-		diceArr[i].clicked == 1;
-	}
-	else{
-		diceArr[i].clicked == 0;
-	}
-
+function bankScore() {
+  alert(
+    "Thanks for playing! Your total score is: " +
+      document.getElementById("score").innerHTML
+  );
 }
