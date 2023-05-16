@@ -38,17 +38,23 @@ function rollDice() {
       ];
 
       let points = 0;
+
       for (var i = 0; i < diceArr.length; i++) {
-        // Scoring for rolling 1s and 5s
         const valueOfDiceIsOne = diceArr.find((val) => val === 1);
         const valueOfDiceIsFive = diceArr.find((val) => val === 5);
-        if (valueOfDiceIsOne && valueOfDiceIsOne.length !== 3) {
-          document.getElementById("header-text").innerHTML = "You rolled a 1!";
-          points = 100;
-          document.getElementById("score").innerHTML = points;
-        }
+        const filterOnesAndFives = diceArr.filter(
+          (val) => val === 1 || val === 5
+        );
 
-        if (valueOfDiceIsFive) {
+        // Scoring for rolling 1s (not three of a kind)
+        if (valueOfDiceIsOne && filterOnesAndFives.length !== 3) {
+          document.getElementById("header-text").innerHTML = "You rolled a 1!";
+          document.getElementById("score").innerHTML = 100;
+        }
+        //Scoring for rolling 5s (not three of a kind)
+        if (valueOfDiceIsFive && filterOnesAndFives.length !== 3) {
+          document.getElementById("header-text").innerHTML = "You rolled a 5!";
+          document.getElementById("score").innerHTML = 50;
         }
 
         // Scoring for rolling three of a kind
