@@ -36,20 +36,28 @@ function rollDice() {
         randomNumber5,
         randomNumber6,
       ];
+
+      let points = 0;
       for (var i = 0; i < diceArr.length; i++) {
-        //Scoring for rolling 1s
-        // const valueOfDiceIsOne = diceArr.filter((val) => val === 1);
-        //   if(valueOfDiceIsOne){
-        //     document.getElementById("header-text").innerHTML = "Y";
-        //   }
+        // Scoring for rolling 1s and 5s
+        const valueOfDiceIsOne = diceArr.find((val) => val === 1);
+        const valueOfDiceIsFive = diceArr.find((val) => val === 5);
+        if (valueOfDiceIsOne && valueOfDiceIsOne.length !== 3) {
+          document.getElementById("header-text").innerHTML = "You rolled a 1!";
+          points = 100;
+          document.getElementById("score").innerHTML = points;
+        }
 
-        //Scoring for rolling three of a kind
+        if (valueOfDiceIsFive) {
+        }
 
+        // Scoring for rolling three of a kind
         const isDuplicate = diceArr.filter((val) => val === diceArr[i]);
         if (isDuplicate.length === 3) {
           var valueOfDice = isDuplicate[0];
           document.getElementById("header-text").innerHTML = "Three of a kind!";
-          document.getElementById("score").innerHTML = valueOfDice * 100;
+          points = valueOfDice * 100;
+          document.getElementById("score").innerHTML = points;
         }
       }
     }
