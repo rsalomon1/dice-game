@@ -28,15 +28,7 @@ function rollDice() {
       .setAttribute("src", "./images/" + randomNumber6 + ".png");
 
     function determineScore() {
-      var diceArr = [
-        1, 2, 1, 2, 1, 2,
-        // randomNumber1,
-        // randomNumber2,
-        // randomNumber3,
-        // randomNumber4,
-        // randomNumber5,
-        // randomNumber6,
-      ];
+      var diceArr = [1, 1, 6, 6, 6, 2];
 
       let points = 0;
 
@@ -66,6 +58,12 @@ function rollDice() {
           }
           return false;
         }
+        //Filters the array to include only 1s and 5s
+        const onlyOnes = diceArr.filter((val) => val === 1);
+        const onlyFives = diceArr.filter((val) => val === 5);
+        //Adds additional ones and fives after a three of a kind roll
+        var addOnes = onlyOnes.length * 100;
+        var addFives = onlyFives.length * 50;
         //All conditions if roll contains a three of a kind
         if (isThreeOfAKind(diceArr, 3)) {
           //Checks to see whether there are 2 three of a kinds
@@ -94,16 +92,45 @@ function rollDice() {
           ) {
             //Checks to see whether the three of a kind is all 1s
             if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
-              document.getElementById("score").innerHTML = 1000;
+              //Points added if there are 5s as well (1s not included, because it would be four of a kind, not three)
 
-              document.getElementById("header-text").innerHTML =
-                "You rolled three 1s!";
+              document.getElementById("score").innerHTML = 1000 + addFives;
+              onlyFives.length === 0
+                ? (document.getElementById("header-text").innerHTML =
+                    "You rolled three 1s!")
+                : (document.getElementById("header-text").innerHTML =
+                    "You rolled three 1s and some fives!");
+
               break;
             }
+            //Calculates score for a three of a kind of 5s,
+            //and any additional 1s
+            const isThreeOfAKindOfFives = checkThreeOfAKind(
+              diceArr,
+              3
+            ).includes(5);
+            if (isThreeOfAKindOfFives) {
+              document.getElementById("score").innerHTML =
+                500 + onlyOnes.length * 100;
+              document.getElementById("header-text").innerHTML =
+                "You rolled a three of a kind and some 1s!";
+              break;
+            }
+            //Adds 1s and 5s to the score if the three of a kind
+            //is not of those values
+            if (onlyOnes.length > 0 < 3 || onlyFives.length > 0 < 3) {
+              document.getElementById("score").innerHTML =
+                checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[3] * 100 +
+                onlyOnes.length * 100 +
+                onlyFives.length * 50;
+              document.getElementById("header-text").innerHTML =
+                "You rolled a three of a kind and some 1s and/or 5s!";
+              break;
+            }
+            //Scores a three of a kind and no additional points
             points =
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
             document.getElementById("score").innerHTML = points;
-
             document.getElementById("header-text").innerHTML =
               "You rolled a three of a kind!";
           }
