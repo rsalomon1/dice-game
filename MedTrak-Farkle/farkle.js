@@ -27,8 +27,20 @@ function rollDice() {
       .getElementById("die6")
       .setAttribute("src", "./images/" + randomNumber6 + ".png");
 
+    //Note: I am working under the assumption that a three of a kind is
+    //considered as rolling exactly three of a single number, and no more.
+    //If a player were to roll the same number more than three
+    //times, 3 out of however many were rolled would not count as
+    //a three of a kind.
     function determineScore() {
-      var diceArr = [1, 1, 6, 6, 6, 2];
+      var diceArr = [
+        randomNumber1,
+        randomNumber2,
+        randomNumber3,
+        randomNumber4,
+        randomNumber5,
+        randomNumber6,
+      ];
 
       let points = 0;
 
@@ -99,7 +111,7 @@ function rollDice() {
                 ? (document.getElementById("header-text").innerHTML =
                     "You rolled three 1s!")
                 : (document.getElementById("header-text").innerHTML =
-                    "You rolled three 1s and some fives!");
+                    "You rolled three 1s and one or more fives!");
 
               break;
             }
@@ -112,15 +124,22 @@ function rollDice() {
             if (isThreeOfAKindOfFives) {
               document.getElementById("score").innerHTML =
                 500 + onlyOnes.length * 100;
-              document.getElementById("header-text").innerHTML =
-                "You rolled a three of a kind and some 1s!";
+
+              onlyOnes.length > 0
+                ? (document.getElementById("header-text").innerHTML =
+                    "You rolled a three of a kind and some 1s!")
+                : (document.getElementById("header-text").innerHTML =
+                    "You rolled a three of a kind!");
               break;
             }
             //Adds 1s and 5s to the score if the three of a kind
             //is not of those values
-            if (onlyOnes.length > 0 < 3 || onlyFives.length > 0 < 3) {
+            if (
+              (diceArr.includes(1) && onlyOnes.length > 0 < 3) ||
+              (diceArr.includes(5) && onlyFives.length > 0 < 3)
+            ) {
               document.getElementById("score").innerHTML =
-                checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[3] * 100 +
+                checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
                 onlyOnes.length * 100 +
                 onlyFives.length * 50;
               document.getElementById("header-text").innerHTML =
