@@ -29,13 +29,13 @@ function rollDice() {
 
     function determineScore() {
       var diceArr = [
-        randomNumber1,
-        randomNumber2,
-        randomNumber3,
-        randomNumber4,
-        randomNumber5,
-        randomNumber6,
-      ];
+      randomNumber1,
+      randomNumber2,
+      randomNumber3,
+      randomNumber4,
+      randomNumber5,
+      randomNumber6,
+      ]
 
       let points = 0;
 
@@ -68,13 +68,17 @@ function rollDice() {
         if (isThreeOfAKind(diceArr, 3)) {
           if (checkThreeOfAKind(diceArr, 3).length === 2) {
             if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
-              points =
+              document.getElementById("score").innerHTML =
                 1000 +
                 checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+              document.getElementById("header-text").innerHTML =
+                "You rolled three 1s and have an additional three of a kind!";
             }
-            points =
+            document.getElementById("score").innerHTML =
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+            document.getElementById("header-text").innerHTML =
+              "You rolled two three of a kinds!";
           }
           if (
             checkThreeOfAKind(
@@ -84,13 +88,17 @@ function rollDice() {
           ) {
             if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
               document.getElementById("score").innerHTML = 1000;
+
+              document.getElementById("header-text").innerHTML =
+                "You rolled three 1s!";
+              break;
             }
             points =
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
             document.getElementById("score").innerHTML = points;
 
             document.getElementById("header-text").innerHTML =
-              "You have one or more three of a kind!";
+              "You rolled a three of a kind!";
           }
         }
         // Scoring for rolling 1s (not three of a kind)
