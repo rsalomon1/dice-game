@@ -68,3 +68,6 @@ body{
 	/*For dice that are selected*/
 	opacity: 0.75;
 }
+#header-text{
+	font-size: 20px;
+}

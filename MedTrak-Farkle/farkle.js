@@ -44,13 +44,30 @@ function rollDice() {
         const valueOfDiceIsFive = diceArr.find((val) => val === 5);
         const filterOnes = diceArr.filter((val) => val === 1);
         const filterFives = diceArr.filter((val) => val === 5);
+        const isDuplicateNum = diceArr.filter((val) => val === diceArr[i]);
+        const oneOfAKind = isDuplicateNum.length === 3;
+        const twoThreeOfAKind =
+          diceArr.filter((val) => val == diceArr[i]).length === 3;
 
-        const isDuplicate = diceArr.filter((val) => val === diceArr[i]);
-        if (isDuplicate.length === 3) {
-          if (isDuplicate[0] === 1) {
-            document.getElementById("score").innerHTML = "1,000";
+        if (twoThreeOfAKind) {
+          sortedArr = diceArr.sort((x, y) => x - y);
+          const findOnes = sortedArr.filter((val) => val === 1);
+          const findOtherValues = sortedArr.filter((val) => val !== 1);
+          if (findOnes) {
+            points = 1000 + findOtherValues * 100;
+            document.getElementById("score").innerHTML = points;
+          }
+          points = sortedArr[0] * 100 + sortedArr[5] * 100;
+          document.getElementById("score").innerHTML = points;
+          document.getElementById("header-text").innerHTML =
+            "Two three of a kinds!";
+        }
+
+        if (oneOfAKind) {
+          if (isDuplicateNum[0] === 1) {
+            document.getElementById("score").innerHTML = 1000;
           } else {
-            points = isDuplicate[0] * 100;
+            points = isDuplicateNum[0] * 100;
             document.getElementById("score").innerHTML = points;
           }
 
@@ -58,17 +75,25 @@ function rollDice() {
         }
 
         // Scoring for rolling 1s (not three of a kind)
-        if (valueOfDiceIsOne && filterOnes.length !== 3) {
-          document.getElementById("header-text").innerHTML =
-            "You rolled one or more 1s!";
-          document.getElementById("score").innerHTML = filterOnes.length * 100;
+        if (valueOfDiceIsOne || valueOfDiceIsFive && (filterOnes.length !== 3) && (filterFives.length !==3)) {
+         
+            if(valueOfDiceIsOne && valueOfDiceIsFive){
+              points = filterOnes.length * 100 + filterFives.length * 50;
+            }else{
+              valueOfDiceIsOne ? points += filterOnes.length * 100 : filterFives.length * 50;
+            }
+            
+            document.getElementById("score").innerHTML = points;
+            document.getElementById("header-text").innerHTML =
+              "You earned points for rolling 1s and/or 5s, but not a three of a kind.";
+        
         }
         //Scoring for rolling 5s (not three of a kind)
-        if (valueOfDiceIsFive && filterFives.length !== 3) {
-          document.getElementById("header-text").innerHTML =
-            "You rolled one or more 5s!";
-          document.getElementById("score").innerHTML = filterFives.length * 50;
-        }
+        // if (valueOfDiceIsFive && filterFives.length !== 3) {
+        //   document.getElementById("header-text").innerHTML =
+        //     "You rolled one or more 5s!";
+        //   document.getElementById("score").innerHTML = filterFives.length * 50;
+        // }
         //Scoring for rolling 1s and 5s (not three of a kind)
 
         // Scoring for rolling three of a kind
