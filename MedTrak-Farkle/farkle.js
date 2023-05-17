@@ -40,9 +40,6 @@ function rollDice() {
       let points = 0;
 
       for (var i = 0; i < diceArr.length; i++) {
-        const valueOfDiceIsOne = diceArr.find((val) => val === 1);
-        const valueOfDiceIsFive = diceArr.find((val) => val === 5);
-
         function checkThreeOfAKind(array, count) {
           const resultArr = array.filter(
             (a, index) =>
@@ -68,51 +65,50 @@ function rollDice() {
           return false;
         }
 
-        if (checkThreeOfAKind(diceArr, 3).length === 2) {
-          if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+        if (isThreeOfAKind(diceArr, 3)) {
+          if (checkThreeOfAKind(diceArr, 3).length === 2) {
+            if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+              points =
+                1000 +
+                checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+            }
             points =
-              1000 +
+              checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
           }
-          points =
-            checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
-            checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
-        }
-        if (
-          checkThreeOfAKind(
-            diceArr.sort((x, y) => x - y),
-            3
-          ).length === 1
-        ) {
-          if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
-            document.getElementById("score").innerHTML = 1000;
-          }
-          points = checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
-          document.getElementById("score").innerHTML = points;
+          if (
+            checkThreeOfAKind(
+              diceArr.sort((x, y) => x - y),
+              3
+            ).length === 1
+          ) {
+            if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+              document.getElementById("score").innerHTML = 1000;
+            }
+            points =
+              checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
+            document.getElementById("score").innerHTML = points;
 
-          document.getElementById("header-text").innerHTML =
-            "You have one or more three of a kind!";
+            document.getElementById("header-text").innerHTML =
+              "You have one or more three of a kind!";
+          }
         }
         // Scoring for rolling 1s (not three of a kind)
-        if (
-          !isThreeOfAKind(diceArr, 3) &&
-          (valueOfDiceIsOne || valueOfDiceIsFive)
-        ) {
-          valueOfDiceIsOne && points + 100;
-          valueOfDiceIsFive && points + 50;
-
-          document.getElementById("score").innerHTML = points;
-          document.getElementById("header-text").innerHTML =
-            "You earned points for rolling 1s and/or 5s, but not a three of a kind.";
-        } //Farkle scoring
-        if (
-          !isThreeOfAKind(diceArr, 3) &&
-          !valueOfDiceIsOne &&
-          !valueOfDiceIsFive
-        ) {
-          document.getElementById("score").innerHTML = 0;
-          document.getElementById("header-text").innerHTML =
-            "Farkle! Your roll didn't produce any points.";
+        if (!isThreeOfAKind(diceArr, 3)) {
+          if (diceArr.includes(1) || diceArr.includes(5)) {
+            const valueOfDiceIsOne = diceArr.filter((val) => val === 1);
+            const valueOfDiceIsFive = diceArr.filter((val) => val === 5);
+            points =
+              valueOfDiceIsOne.length * 100 + valueOfDiceIsFive.length * 50;
+            document.getElementById("score").innerHTML = points;
+            document.getElementById("header-text").innerHTML =
+              "You earned points for rolling 1s and/or 5s, but not a three of a kind.";
+          } //Farkle scoring
+          if (!diceArr.includes(1) && !diceArr.includes(5)) {
+            document.getElementById("score").innerHTML = 0;
+            document.getElementById("header-text").innerHTML =
+              "Farkle! Your roll didn't produce any points.";
+          }
         }
       }
     }
