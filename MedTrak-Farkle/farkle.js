@@ -11,21 +11,8 @@ function arrThreeOfAKind(array, count) {
   }
 }
 
-//Boolean to check whether the array contains a three of a kind
-function isThreeOfAKind(array, count) {
-  const resultArr = array.filter(
-    (a, index) =>
-      array.indexOf(a) === index &&
-      array.reduce((acc, b) => +(a === b) + acc, 0) === count
-  );
-
-  if (resultArr.length > 0) {
-    return true;
-  }
-  return false;
-}
-
 function rollDice() {
+  //Update die images
   var randomNumber1 = Math.floor(Math.random() * 6) + 1;
   var randomNumber2 = Math.floor(Math.random() * 6) + 1;
   var randomNumber3 = Math.floor(Math.random() * 6) + 1;
@@ -67,24 +54,28 @@ function rollDice() {
 
     var headerElement = document.getElementById("header-text");
     var scoreElement = document.getElementById("score");
+    const isThreeOfAKind = arrThreeOfAKind(diceArr, 3);
     var points = 0;
 
     for (var i = 0; i < diceArr.length; i++) {
-      //Filters the array to include only 1s and 5s
-      const onlyOnes = diceArr.filter((val) => val === 1);
-      const onlyFives = diceArr.filter((val) => val === 5);
+      const arrOfOnes = diceArr.filter((val) => val === 1);
+      const arrOfFives = diceArr.filter((val) => val === 5);
+
       //Adds additional ones and fives after a three of a kind roll
-      var addOnes = onlyOnes.length * 100;
-      var addFives = onlyFives.length * 50;
-      //All conditions if roll contains a three of a kind
-      if (isThreeOfAKind(diceArr, 3)) {
+      var addOnes = arrOfOnes.length * 100;
+      var addFives = arrOfFives.length * 50;
+
+      //Checks for all of the conditions that the dice could roll.
+      //Starts with conditions if the array produces a three of a kind.
+      if (isThreeOfAKind) {
         //Checks to see whether there are 2 three of a kinds
         if (arrThreeOfAKind(diceArr, 3).length === 2) {
           //Checks to see whether one of the two three of a kinds is all 1s
           if (arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+            //Accounts for the 1s and calculates the value of a second third
+            //of a kind, if present
             scoreElement.innerHTML =
-              1000 +
-              arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+              1000 + arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
             headerElement.innerHTML =
               "You rolled three 1s and have an additional three of a kind!";
             break;
@@ -94,49 +85,38 @@ function rollDice() {
             arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
           headerElement.innerHTML = "You rolled two three of a kinds!";
         }
-        //Checks to see if only one three of a kind exists
-        if (
-          arrThreeOfAKind(
-            diceArr.sort((x, y) => x - y),
-            3
-          ).length === 1
-        ) {
-          //Checks to see whether the three of a kind is all 1s
+        //Below conditions are if there is only one three of a kind
+        if (arrThreeOfAKind(diceArr, 3).length === 1) {
+          //Calculates score for a three of a kind of 1s,
+          //and any additional 5s
           if (arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
-            //Points added if there are 5s as well (1s not included, because it would be four of a kind, not three)
-
             scoreElement.innerHTML = 1000 + addFives;
-            onlyFives.length === 0
+            arrOfFives.length === 0
               ? (headerElement.innerHTML = "You rolled three 1s!")
               : (headerElement.innerHTML =
                   "You rolled three 1s and one or more fives!");
 
             break;
           }
-          //Calculates score for a three of a kind of 5s,
-          //and any additional 1s
-          const isThreeOfAKindOfFives = arrThreeOfAKind(diceArr, 3).includes(
-            5
-          );
-          if (isThreeOfAKindOfFives) {
-            scoreElement.innerHTML = 500 + onlyOnes.length * 100;
+          //Calculates score for a three of a kind of 5s and any additional 1s
+          if (arrThreeOfAKind(diceArr, 3).includes(5)) {
+            scoreElement.innerHTML = 500 + addOnes;
 
-            onlyOnes.length > 0
+            arrOfOnes.length > 0
               ? (headerElement.innerHTML =
                   "You rolled a three of a kind and some 1s!")
               : (headerElement.innerHTML = "You rolled a three of a kind!");
             break;
           }
-          //Adds 1s and 5s to the score if the three of a kind
-          //is not of those values
+          //Adds 1s and 5s to the score if the three of a kind is not of those values
           if (
-            (diceArr.includes(1) && onlyOnes.length > 0 < 3) ||
-            (diceArr.includes(5) && onlyFives.length > 0 < 3)
+            (diceArr.includes(1) && arrOfOnes.length > 0 < 3) ||
+            (diceArr.includes(5) && arrOfFives.length > 0 < 3)
           ) {
             scoreElement.innerHTML =
               arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
-              onlyOnes.length * 100 +
-              onlyFives.length * 50;
+              addOnes +
+              addFives;
             headerElement.innerHTML =
               "You rolled a three of a kind and some 1s and/or 5s!";
             break;
@@ -147,14 +127,10 @@ function rollDice() {
           headerElement.innerHTML = "You rolled a three of a kind!";
         }
       }
-      // Checks to see whether there are 1s and 5s in a roll,
-      //but that aren't part of a three of a kind
-      if (!isThreeOfAKind(diceArr, 3)) {
+      // Checks to see whether there are 1s and 5s in a roll that aren't part of a three of a kind
+      if (!isThreeOfAKind) {
         if (diceArr.includes(1) || diceArr.includes(5)) {
-          const valueOfDiceIsOne = diceArr.filter((val) => val === 1);
-          const valueOfDiceIsFive = diceArr.filter((val) => val === 5);
-          points =
-            valueOfDiceIsOne.length * 100 + valueOfDiceIsFive.length * 50;
+          points = arrOfOnes.length * 100 + arrOfFives.length * 50;
           scoreElement.innerHTML = points;
           headerElement.innerHTML =
             "You earned points for rolling 1s and/or 5s, but not a three of a kind.";
@@ -169,15 +145,15 @@ function rollDice() {
   }
   determineScore();
 }
-
 function bankScore() {
   if (
     confirm(
       "Your total score is: " +
-        scoreElement.innerHTML +
+        document.getElementById("score").innerHTML +
         ". By banking your score, you take home your points and end the game."
     ) === true
   ) {
-    scoreElement.innerHTML = 0;
+    document.getElementById("score").innerHTML = 0;
+    window.location.reload();
   }
 }
