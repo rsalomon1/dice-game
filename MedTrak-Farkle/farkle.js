@@ -10,47 +10,36 @@ function arrThreeOfAKind(array, count) {
     return result;
   }
 }
-
+var diceArr = [];
 function rollDice() {
   //Update die images
-  var randomNumber1 = Math.floor(Math.random() * 6) + 1;
-  var randomNumber2 = Math.floor(Math.random() * 6) + 1;
-  var randomNumber3 = Math.floor(Math.random() * 6) + 1;
-  var randomNumber4 = Math.floor(Math.random() * 6) + 1;
-  var randomNumber5 = Math.floor(Math.random() * 6) + 1;
-  var randomNumber6 = Math.floor(Math.random() * 6) + 1;
+
+  diceArr = [...Array(6)].map((e) => Math.floor(Math.random() * 6) + 1);
 
   document
     .getElementById("die1")
-    .setAttribute("src", "./images/" + randomNumber1 + ".png");
+    .setAttribute("src", "./images/" + diceArr[0] + ".png");
   document
     .getElementById("die2")
-    .setAttribute("src", "./images/" + randomNumber2 + ".png");
+    .setAttribute("src", "./images/" + diceArr[1] + ".png");
   document
     .getElementById("die3")
-    .setAttribute("src", "./images/" + randomNumber3 + ".png");
+    .setAttribute("src", "./images/" + diceArr[2] + ".png");
   document
     .getElementById("die4")
-    .setAttribute("src", "./images/" + randomNumber4 + ".png");
+    .setAttribute("src", "./images/" + diceArr[3] + ".png");
   document
     .getElementById("die5")
-    .setAttribute("src", "./images/" + randomNumber5 + ".png");
+    .setAttribute("src", "./images/" + diceArr[4] + ".png");
   document
     .getElementById("die6")
-    .setAttribute("src", "./images/" + randomNumber6 + ".png");
+    .setAttribute("src", "./images/" + diceArr[5] + ".png");
 
-  diceArr = [
-    randomNumber1,
-    randomNumber2,
-    randomNumber3,
-    randomNumber4,
-    randomNumber5,
-    randomNumber6,
-  ];
   return determineScore(diceArr);
+
+}
   // Note: My assumption throughout is that a three of a kind is defined as
   // *exactly* three of a single number in a single roll and no more.
-}
 function determineScore() {
   var headerElement = document.getElementById("header-text");
   var scoreElement = document.getElementById("score");
