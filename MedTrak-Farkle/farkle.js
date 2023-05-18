@@ -12,8 +12,8 @@ function arrThreeOfAKind(array, count) {
 }
 var diceArr = [];
 function rollDice() {
-  diceArr = [...Array(6)].map((e) => Math.floor(Math.random() * 6) + 1);
-  //Update die images
+  diceArr = [...Array(6)].map(() => Math.floor(Math.random() * 6) + 1);
+  //Update dice images
   function updateDiceImages() {
     for (var i = 1; i <= 6; i++) {
       var imageElement = "die" + i;
