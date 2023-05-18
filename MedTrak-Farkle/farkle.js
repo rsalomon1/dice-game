@@ -1,3 +1,16 @@
+function bankScore() {
+  if (
+    confirm(
+      "Your total score is: " +
+        document.getElementById("score").innerHTML +
+        ". By banking your score, you take home your points and end the game."
+    ) === true
+  ) {
+    document.getElementById("score").innerHTML = 0;
+    window.location.reload();
+  }
+}
+
 //Produces the array from a three of a kind roll
 function arrThreeOfAKind(array, count) {
   const result = array.filter(
@@ -13,7 +26,7 @@ function arrThreeOfAKind(array, count) {
 var diceArr = [];
 function rollDice() {
   diceArr = [...Array(6)].map(() => Math.floor(Math.random() * 6) + 1);
-  //Update dice images
+
   function updateDiceImages() {
     for (var i = 1; i <= 6; i++) {
       var imageElement = "die" + i;
@@ -41,8 +54,8 @@ function determineScore() {
     var addOnes = arrOfOnes.length * 100;
     var addFives = arrOfFives.length * 50;
 
-    //Checks for all of the conditions that the dice could roll.
-    //Starts with conditions if the array produces a three of a kind.
+    //Checks for all of the conditions that the dice could roll,
+    //beginning with three of a kinds.
     if (isThreeOfAKind) {
       //Checks to see whether there are 2 three of a kinds
       if (arrThreeOfAKind(diceArr, 3).length === 2) {
@@ -117,17 +130,5 @@ function determineScore() {
           "Farkle! Your roll didn't produce any points.";
       }
     }
-  }
-}
-function bankScore() {
-  if (
-    confirm(
-      "Your total score is: " +
-        document.getElementById("score").innerHTML +
-        ". By banking your score, you take home your points and end the game."
-    ) === true
-  ) {
-    document.getElementById("score").innerHTML = 0;
-    window.location.reload();
   }
 }
