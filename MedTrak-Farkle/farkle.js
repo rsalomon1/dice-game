@@ -12,34 +12,21 @@ function arrThreeOfAKind(array, count) {
 }
 var diceArr = [];
 function rollDice() {
-  //Update die images
-
   diceArr = [...Array(6)].map((e) => Math.floor(Math.random() * 6) + 1);
-
-  document
-    .getElementById("die1")
-    .setAttribute("src", "./images/" + diceArr[0] + ".png");
-  document
-    .getElementById("die2")
-    .setAttribute("src", "./images/" + diceArr[1] + ".png");
-  document
-    .getElementById("die3")
-    .setAttribute("src", "./images/" + diceArr[2] + ".png");
-  document
-    .getElementById("die4")
-    .setAttribute("src", "./images/" + diceArr[3] + ".png");
-  document
-    .getElementById("die5")
-    .setAttribute("src", "./images/" + diceArr[4] + ".png");
-  document
-    .getElementById("die6")
-    .setAttribute("src", "./images/" + diceArr[5] + ".png");
-
-  return determineScore(diceArr);
-
+  //Update die images
+  function updateDiceImages() {
+    for (var i = 1; i <= 6; i++) {
+      var imageElement = "die" + i;
+      document
+        .getElementById(imageElement)
+        .setAttribute("src", "./images/" + diceArr[i - 1] + ".png");
+    }
+  }
+  updateDiceImages();
+  determineScore(diceArr);
 }
-  // Note: My assumption throughout is that a three of a kind is defined as
-  // *exactly* three of a single number in a single roll and no more.
+// Note: My assumption throughout is that a three of a kind is defined as
+// *exactly* three of a single number in a single roll and no more.
 function determineScore() {
   var headerElement = document.getElementById("header-text");
   var scoreElement = document.getElementById("score");
