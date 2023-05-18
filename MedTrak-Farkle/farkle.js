@@ -1,3 +1,30 @@
+//Produces the array from a three of a kind roll
+function arrThreeOfAKind(array, count) {
+  const result = array.filter(
+    (a, index) =>
+      array.indexOf(a) === index &&
+      array.reduce((acc, b) => +(a === b) + acc, 0) === count
+  );
+
+  if (result.length > 0) {
+    return result;
+  }
+}
+
+//Boolean to check whether the array contains a three of a kind
+function isThreeOfAKind(array, count) {
+  const resultArr = array.filter(
+    (a, index) =>
+      array.indexOf(a) === index &&
+      array.reduce((acc, b) => +(a === b) + acc, 0) === count
+  );
+
+  if (resultArr.length > 0) {
+    return true;
+  }
+  return false;
+}
+
 function rollDice() {
   var randomNumber1 = Math.floor(Math.random() * 6) + 1;
   var randomNumber2 = Math.floor(Math.random() * 6) + 1;
@@ -9,7 +36,6 @@ function rollDice() {
   document
     .getElementById("die1")
     .setAttribute("src", "./images/" + randomNumber1 + ".png");
-
   document
     .getElementById("die2")
     .setAttribute("src", "./images/" + randomNumber2 + ".png");
@@ -26,11 +52,9 @@ function rollDice() {
     .getElementById("die6")
     .setAttribute("src", "./images/" + randomNumber6 + ".png");
 
-  //Note: I am working under the assumption that a three of a kind is
-  //considered as rolling exactly three of a single number, and no more.
-  //If a player were to roll the same number more than three
-  //times, 3 out of however many were rolled would not count as
-  //a three of a kind.
+  // Note: My assumption throughout is that a three of a kind is defined as
+  // *exactly* three of a single number in a single roll and no more.
+
   function determineScore() {
     var diceArr = [
       randomNumber1,
@@ -46,31 +70,6 @@ function rollDice() {
     var points = 0;
 
     for (var i = 0; i < diceArr.length; i++) {
-      //Produces the array from a three of a kind roll
-      function checkThreeOfAKind(array, count) {
-        const resultArr = array.filter(
-          (a, index) =>
-            array.indexOf(a) === index &&
-            array.reduce((acc, b) => +(a === b) + acc, 0) === count
-        );
-
-        if (resultArr.length > 0) {
-          return resultArr;
-        }
-      }
-      //Boolean to check whether the array contains a three of a kind
-      function isThreeOfAKind(array, count) {
-        const resultArr = array.filter(
-          (a, index) =>
-            array.indexOf(a) === index &&
-            array.reduce((acc, b) => +(a === b) + acc, 0) === count
-        );
-
-        if (resultArr.length > 0) {
-          return true;
-        }
-        return false;
-      }
       //Filters the array to include only 1s and 5s
       const onlyOnes = diceArr.filter((val) => val === 1);
       const onlyFives = diceArr.filter((val) => val === 5);
@@ -80,30 +79,30 @@ function rollDice() {
       //All conditions if roll contains a three of a kind
       if (isThreeOfAKind(diceArr, 3)) {
         //Checks to see whether there are 2 three of a kinds
-        if (checkThreeOfAKind(diceArr, 3).length === 2) {
+        if (arrThreeOfAKind(diceArr, 3).length === 2) {
           //Checks to see whether one of the two three of a kinds is all 1s
-          if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+          if (arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
             scoreElement.innerHTML =
               1000 +
-              checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+              arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
             headerElement.innerHTML =
               "You rolled three 1s and have an additional three of a kind!";
             break;
           }
           scoreElement.innerHTML =
-            checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
-            checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
+            arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
+            arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
           headerElement.innerHTML = "You rolled two three of a kinds!";
         }
         //Checks to see if only one three of a kind exists
         if (
-          checkThreeOfAKind(
+          arrThreeOfAKind(
             diceArr.sort((x, y) => x - y),
             3
           ).length === 1
         ) {
           //Checks to see whether the three of a kind is all 1s
-          if (checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
+          if (arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] === 1) {
             //Points added if there are 5s as well (1s not included, because it would be four of a kind, not three)
 
             scoreElement.innerHTML = 1000 + addFives;
@@ -116,7 +115,7 @@ function rollDice() {
           }
           //Calculates score for a three of a kind of 5s,
           //and any additional 1s
-          const isThreeOfAKindOfFives = checkThreeOfAKind(diceArr, 3).includes(
+          const isThreeOfAKindOfFives = arrThreeOfAKind(diceArr, 3).includes(
             5
           );
           if (isThreeOfAKindOfFives) {
@@ -135,7 +134,7 @@ function rollDice() {
             (diceArr.includes(5) && onlyFives.length > 0 < 3)
           ) {
             scoreElement.innerHTML =
-              checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
+              arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
               onlyOnes.length * 100 +
               onlyFives.length * 50;
             headerElement.innerHTML =
@@ -143,7 +142,7 @@ function rollDice() {
             break;
           }
           //Scores a three of a kind and no additional points
-          points = checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
+          points = arrThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
           scoreElement.innerHTML = points;
           headerElement.innerHTML = "You rolled a three of a kind!";
         }
