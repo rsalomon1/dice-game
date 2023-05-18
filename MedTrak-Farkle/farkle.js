@@ -42,6 +42,7 @@ function rollDice() {
         randomNumber6,
       ];
 
+      var headerText = document.getElementById("header-text");
       let points = 0;
 
       for (var i = 0; i < diceArr.length; i++) {
@@ -85,14 +86,13 @@ function rollDice() {
               document.getElementById("score").innerHTML =
                 1000 +
                 checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
-              document.getElementById("header-text").innerHTML =
-                "You rolled three 1s and have an additional three of a kind!";
+              headerText.innerHTML = "You rolled three 1s and have an additional three of a kind!";
               break;
             }
             document.getElementById("score").innerHTML =
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[1] * 100;
-            document.getElementById("header-text").innerHTML =
+            headerText.innerHTML =
               "You rolled two three of a kinds!";
           }
           //Checks to see if only one three of a kind exists
@@ -108,9 +108,9 @@ function rollDice() {
 
               document.getElementById("score").innerHTML = 1000 + addFives;
               onlyFives.length === 0
-                ? (document.getElementById("header-text").innerHTML =
+                ? (headerText.innerHTML =
                     "You rolled three 1s!")
-                : (document.getElementById("header-text").innerHTML =
+                : (headerText.innerHTML =
                     "You rolled three 1s and one or more fives!");
 
               break;
@@ -126,9 +126,9 @@ function rollDice() {
                 500 + onlyOnes.length * 100;
 
               onlyOnes.length > 0
-                ? (document.getElementById("header-text").innerHTML =
+                ? (headerText.innerHTML =
                     "You rolled a three of a kind and some 1s!")
-                : (document.getElementById("header-text").innerHTML =
+                : (headerText.innerHTML =
                     "You rolled a three of a kind!");
               break;
             }
@@ -142,7 +142,7 @@ function rollDice() {
                 checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100 +
                 onlyOnes.length * 100 +
                 onlyFives.length * 50;
-              document.getElementById("header-text").innerHTML =
+              headerText.innerHTML =
                 "You rolled a three of a kind and some 1s and/or 5s!";
               break;
             }
@@ -150,7 +150,7 @@ function rollDice() {
             points =
               checkThreeOfAKind(diceArr, 3).sort((x, y) => x - y)[0] * 100;
             document.getElementById("score").innerHTML = points;
-            document.getElementById("header-text").innerHTML =
+            headerText.innerHTML =
               "You rolled a three of a kind!";
           }
         }
@@ -163,12 +163,12 @@ function rollDice() {
             points =
               valueOfDiceIsOne.length * 100 + valueOfDiceIsFive.length * 50;
             document.getElementById("score").innerHTML = points;
-            document.getElementById("header-text").innerHTML =
+            headerText.innerHTML =
               "You earned points for rolling 1s and/or 5s, but not a three of a kind.";
           } //Checks to see if the roll is a Farkle
           if (!diceArr.includes(1) && !diceArr.includes(5)) {
             document.getElementById("score").innerHTML = 0;
-            document.getElementById("header-text").innerHTML =
+            headerText.innerHTML =
               "Farkle! Your roll didn't produce any points.";
           }
         }
